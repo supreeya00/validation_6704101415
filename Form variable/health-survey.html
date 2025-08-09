@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ฟอร์มสุขภาพสุด</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #f7f1e1, #e6dad3);
+      font-family: 'Prompt', sans-serif;
+      color: #4b3d2e;
+      padding: 40px;
+    }
+
+    .form-container {
+      background: #fffaf5;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      font-weight: 600;
+      color: #a07c5c;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-weight: 500;
+      display: block;
+      margin: 15px 0 5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d4c1b3;
+      border-radius: 8px;
+      background: #fff;
+      font-family: inherit;
+    }
+
+    input[type="radio"] {
+      width: auto;
+      margin-right: 5px;
+    }
+
+    .section {
+      margin-top: 25px;
+    }
+
+    .submit-btn {
+      background: #a07c5c;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 25px;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      background: #8d6b4f;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+
+    .dark-mode {
+      background: #2d2d2d;
+      color: #f5f5f5;
+    }
+
+    .dark-mode .form-container {
+      background: #3b3b3b;
+      box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+    }
+
+    .dark-mode input,
+    .dark-mode select,
+    .dark-mode textarea {
+      background: #555;
+      color: white;
+      border: 1px solid #aaa;
+    }
+
+    .toggle-btn {
+      display: block;
+      margin: 0 auto 30px;
+      padding: 10px 20px;
+      background: #4b3d2e;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <button class="toggle-btn" onclick="toggleTheme()">🌓 เปลี่ยนโหมด Light / Dark</button>
+
+  <div class="form-container">
+    <h2>🩺 แบบสอบถามสุขภาพ</h2>
+    <form id="healthForm">
+      <label for="fullname">ชื่อ - นามสกุล:</label>
+      <input type="text" id="fullname" required>
+
+      <label for="age">อายุ (15 - 60 ปี):</label>
+      <input type="number" id="age" required>
+
+      <label>เพศ:</label>
+      <select id="gender" required>
+        <option value="">-- เลือกเพศ --</option>
+        <option value="male">ชาย</option>
+        <option value="female">หญิง</option>
+        <option value="other">อื่น ๆ</option>
+        <option value="not_say">ไม่ระบุ</option>
+      </select>
+
+      <label for="weight">น้ำหนัก (กก.):</label>
+      <input type="number" id="weight" required>
+
+      <label for="height">ส่วนสูง (ซม.):</label>
+      <input type="number" id="height" required>
+
+      <div class="section">
+        <label for="diseaseList">โรคประจำตัว:</label>
+        <select id="diseaseList">
+          <option value="">-- ไม่มี / ไม่ระบุ --</option>
+          <option value="ความดันโลหิตสูง">ความดันโลหิตสูง</option>
+          <option value="เบาหวาน">เบาหวาน</option>
+          <option value="โรคหัวใจ">โรคหัวใจ</option>
+          <option value="other">อื่น ๆ</option>
+        </select>
+        <div id="otherDiseaseArea" style="display:none;">
+          <label>โปรดระบุ:</label>
+          <input type="text" id="otherDiseaseInput">
+        </div>
+      </div>
+
+      <div class="section">
+        <label for="sleep">การนอนหลับ (คะแนน 1-5):</label>
+        <input type="number" id="sleep" min="1" max="5" required>
+
+        <label for="water">ดื่มน้ำวันละ (ลิตร):</label>
+        <input type="number" id="water" step="0.1" required>
+
+        <label for="exercise">ออกกำลังกาย (ครั้ง/สัปดาห์):</label>
+        <input type="number" id="exercise" required>
+      </div>
+
+      <button type="submit" class="submit-btn">📤 ส่งแบบฟอร์ม</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    document.getElementById("diseaseList").addEventListener("change", function() {
+      const show = this.value === "other";
+      document.getElementById("otherDiseaseArea").style.display = show ? "block" : "none";
+    });
+
+    document.getElementById("healthForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const age = parseInt(document.getElementById("age").value);
+      const weight = parseFloat(document.getElementById("weight").value);
+      const height = parseFloat(document.getElementById("height").value);
+      const sleep = parseInt(document.getElementById("sleep").value);
+      const water = parseFloat(document.getElementById("water").value);
+      const exercise = parseInt(document.getElementById("exercise").value);
+      const disease = document.getElementById("diseaseList").value;
+      const otherDisease = document.getElementById("otherDiseaseInput").value;
+
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (age < 15 || age > 60) {
+        errorMsg.textContent = "❌ อายุต้องอยู่ระหว่าง 15 - 60 ปี";
+        return;
+      }
+
+      if (weight <= 0 || height <= 0) {
+        errorMsg.textContent = "❌ น้ำหนักและส่วนสูงต้องเป็นค่าบวก";
+        return;
+      }
+
+      if (disease === "other" && otherDisease.trim() === "") {
+        errorMsg.textContent = "❌ กรุณาระบุโรคประจำตัวเพิ่มเติม";
+        return;
+      }
+
+      const bmi = weight / Math.pow(height / 100, 2);
+      let category = "";
+      if (bmi < 18.5) category = "น้ำหนักน้อย";
+      else if (bmi < 25) category = "น้ำหนักปกติ";
+      else if (bmi < 30) category = "น้ำหนักเกิน";
+      else category = "อ้วน";
+
+      let score = 0;
+      if (sleep >= 4) score++;
+      if (water >= 2) score++;
+      if (exercise >= 3) score++;
+
+      let healthComment = "";
+      if (score === 3) healthComment = "สุขภาพโดยรวมดีมาก 💪";
+      else if (score === 2) healthComment = "สุขภาพพอใช้ 🧘";
+      else healthComment = "ควรปรับพฤติกรรม 🛌🚶";
+
+      alert(`✅ ผลการประเมิน:
+BMI: ${bmi.toFixed(2)} (${category})
+คะแนนสุขภาพ: ${score}/3
+${healthComment}`);
+
+      errorMsg.textContent = "";
+    });
+  </script>
+
+</body>
+</html>
