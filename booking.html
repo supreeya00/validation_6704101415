@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>ฟอร์มจองกิจกรรม</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mitr&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Mitr', sans-serif;
+      background-color: #f5f1eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #5b4636;
+      padding: 20px;
+    }
+
+    .container {
+      background: #fffdfa;
+      border-radius: 16px;
+      padding: 40px 30px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 6px 15px rgba(101, 81, 62, 0.15);
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      font-weight: 600;
+      color: #6b5b4b;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #6b5b4b;
+      font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1.5px solid #c7b9a7;
+      background: #f9f6f0;
+      font-size: 16px;
+      color: #5b4636;
+      transition: border-color 0.3s ease;
+      font-family: 'Mitr', sans-serif;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #8c7a63;
+      background: #fff;
+    }
+
+    button {
+      background-color: #8c7a63;
+      color: #fff9f2;
+      padding: 14px 0;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(140, 122, 99, 0.5);
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #6b5b4b;
+    }
+
+    .error {
+      color: #b3503a;
+      font-size: 14px;
+      margin-top: -12px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(91, 70, 54, 0.4);
+    }
+
+    .modal-content {
+      background: #fff9f2;
+      margin: 15% auto;
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      font-family: 'Mitr', sans-serif;
+      box-shadow: 0 8px 24px rgba(101, 81, 62, 0.3);
+      color: #5b4636;
+    }
+
+    .close {
+      float: right;
+      font-size: 24px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #a1866f;
+      transition: color 0.2s ease;
+    }
+
+    .close:hover {
+      color: #6b5b4b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>ฟอร์มจองกิจกรรม</h2>
+    <form id="bookingForm" enctype="multipart/form-data">
+      
+      <label for="fullName">ชื่อ-นามสกุล</label>
+      <input type="text" id="fullName" name="fullName" placeholder="ชื่อ-นามสกุล" />
+
+      <label for="email">อีเมล</label>
+      <input type="email" id="email" name="email" placeholder="example@mail.com" />
+
+      <label for="phone">เบอร์โทรศัพท์</label>
+      <input type="text" id="phone" name="phone" placeholder="0XXXXXXXXX" />
+
+      <label for="date">วันที่เข้าร่วมกิจกรรม</label>
+      <input type="date" id="date" name="date" />
+
+      <label for="time">เวลาที่สะดวกเข้าร่วม</label>
+      <select id="time" name="time">
+        <option value="">-- เลือกเวลา --</option>
+        <option value="9:00-11:00">9:00 - 11:00</option>
+        <option value="13:00-15:00">13:00 - 15:00</option>
+        <option value="16:00-18:00">16:00 - 18:00</option>
+      </select>
+
+      <label for="location">สถานที่เข้าร่วม</label>
+      <select id="location" name="location">
+        <option value="">-- เลือกสถานที่ --</option>
+        <option value="สาขากรุงเทพ">สาขากรุงเทพ</option>
+        <option value="สาขาเชียงใหม่">สาขาเชียงใหม่</option>
+        <option value="สาขาภูเก็ต">สาขาภูเก็ต</option>
+      </select>
+
+      <label for="ticketType">ประเภทตั๋ว</label>
+      <select id="ticketType" name="ticketType">
+        <option value="ปกติ">ปกติ</option>
+        <option value="VIP">VIP</option>
+        <option value="Premium">Premium</option>
+      </select>
+
+      <label for="ticketCount">จำนวนตั๋ว</label>
+      <input type="number" id="ticketCount" name="ticketCount" placeholder="จำนวนตั๋ว" min="1" max="5" />
+
+      <label for="attachment">แนบไฟล์ (ถ้ามี)</label>
+      <input type="file" id="attachment" name="attachment" accept=".pdf,.jpg,.png" />
+
+      <label for="comments">คำถาม / ข้อเสนอแนะ</label>
+      <textarea id="comments" name="comments" rows="4" placeholder="เขียนข้อความของคุณที่นี่..."></textarea>
+
+      <p class="error" id="error"></p>
+
+      <button type="button" onclick="validateForm()">จองตั๋ว</button>
+    </form>
+  </div>
+
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>🎉 จองตั๋วสำเร็จ!</h3>
+      <p id="modalText"></p>
+    </div>
+  </div>
+
+  <script>
+    function validateForm() {
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const location = document.getElementById('location').value;
+      const ticketType = document.getElementById('ticketType').value;
+      const ticketCount = parseInt(document.getElementById('ticketCount').value);
+      const error = document.getElementById('error');
+      const modalText = document.getElementById('modalText');
+
+      error.textContent = '';
+
+      if (fullName.length < 2) {
+        error.textContent = 'ชื่อ-นามสกุลต้องมีอย่างน้อย 2 ตัวอักษร';
+        return;
+      }
+
+      if (!validateEmail(email)) {
+        error.textContent = 'กรุณากรอกอีเมลให้ถูกต้อง';
+        return;
+      }
+
+      if (!/^[0]\d{9}$/.test(phone)) {
+        error.textContent = 'เบอร์โทรศัพท์ต้องขึ้นต้นด้วย 0 และมี 10 หลัก';
+        return;
+      }
+
+      if (!date) {
+        error.textContent = 'กรุณาเลือกวันที่เข้าร่วมกิจกรรม';
+        return;
+      }
+
+      if (!time) {
+        error.textContent = 'กรุณาเลือกเวลาที่สะดวกเข้าร่วม';
+        return;
+      }
+
+      if (!location) {
+        error.textContent = 'กรุณาเลือกสถานที่เข้าร่วม';
+        return;
+      }
+
+      if (isNaN(ticketCount) || ticketCount < 1 || ticketCount > 5) {
+        error.textContent = 'จำนวนตั๋วต้องอยู่ระหว่าง 1 ถึง 5';
+        return;
+      }
+
+      if ((ticketType === 'VIP' || ticketType === 'Premium') && ticketCount > 2) {
+        error.textContent = 'VIP หรือ Premium จำกัดจำนวนตั๋วไม่เกิน 2';
+        return;
+      }
+
+      modalText.innerHTML = `
+        ชื่อ-นามสกุล: ${fullName}<br/>
+        อีเมล: ${email}<br/>
+        เบอร์โทรศัพท์: ${phone}<br/>
+        วันที่เข้าร่วม: ${date}<br/>
+        เวลา: ${time}<br/>
+        สถานที่: ${location}<br/>
+        ประเภทตั๋ว: ${ticketType}<br/>
+        จำนวนตั๋ว: ${ticketCount}
+      `;
+
+      document.getElementById('successModal').style.display = 'block';
+    }
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function closeModal() {
+      document.getElementById('successModal').style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+      const modal = document.getElementById('successModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    };
+  </script>
+</body>
+</html>
